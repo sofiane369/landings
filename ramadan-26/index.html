@@ -129,33 +129,38 @@
     </main>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.cta-img').forEach(function (el) {
 
-            document.querySelectorAll('.cta-img').forEach(function (el) {
+        el.addEventListener('click', function (e) {
 
-                el.addEventListener('click', function (e) {
+            e.preventDefault();
 
-                    e.preventDefault();
+            const url = this.href;
 
-                    const url = this.href;
+            if (window.posthog) {
 
-                    posthog.capture('telegram_click', {
-                        link_id: this.id || null,
-                        href: url
-                    }, function () {
-                        window.location.href = url;
-                    });
-
+                posthog.capture('telegram_clicked', {
+                    link_id: this.id || null,
+                    href: url,
+                    page_url: window.location.href
                 });
 
-            });
+            }
+
+            // redirection après court délai
+            setTimeout(function () {
+                window.location.href = url;
+            }, 200);
 
         });
-    </script>
 
+    });
 
+});
+</script>
 
 
 </body>
