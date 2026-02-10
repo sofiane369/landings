@@ -133,22 +133,23 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
-            function trackTelegramClick(event) {
-                if (!window.posthog) return;
-
-                const link = event.currentTarget;
-
-                posthog.capture('telegram_click', {
-                    link_id: link.id || null,
-                    href: link.href,
-                    page_url: window.location.href,
-                    referrer: document.referrer || ""
-                });
-            }
-
-            // Attache le tracking à tous les boutons Telegram
             document.querySelectorAll('.cta-img').forEach(function (el) {
-                el.addEventListener('click', trackTelegramClick);
+
+                el.addEventListener('click', function (e) {
+
+                    e.preventDefault();
+
+                    const url = this.href;
+
+                    posthog.capture('telegram_click', {
+                        link_id: this.id || null,
+                        href: url
+                    }, function () {
+                        window.location.href = url;
+                    });
+
+                });
+
             });
 
         });
