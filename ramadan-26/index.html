@@ -130,6 +130,33 @@
 
 
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            function trackTelegramClick(event) {
+                if (!window.posthog) return;
+
+                const link = event.currentTarget;
+
+                posthog.capture('telegram_click', {
+                    link_id: link.id || null,
+                    href: link.href,
+                    page_url: window.location.href,
+                    referrer: document.referrer || ""
+                });
+            }
+
+            // Attache le tracking à tous les boutons Telegram
+            document.querySelectorAll('.cta-img').forEach(function (el) {
+                el.addEventListener('click', trackTelegramClick);
+            });
+
+        });
+    </script>
+
+
+
+
 </body>
 
 </html>
