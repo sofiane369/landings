@@ -128,41 +128,6 @@
         </a>
     </main>
 
-
-    document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('.cta-img').forEach(function (el) {
-    el.addEventListener('click', function (e) {
-    const url = this.getAttribute('href');
-
-    // Empêche la redirection immédiate
-    e.preventDefault();
-
-    if (window.posthog) {
-    posthog.capture('telegram_clicked', {
-    link_id: this.id || "unknown",
-    href: url,
-    page_url: window.location.href
-    }, {
-    // ✅ CETTE PARTIE EST CRUCIALE
-    // On attend que PostHog confirme l'envoi avant de partir
-    callback: function() {
-    window.location.href = url;
-    }
-    });
-
-    // Sécurité au cas où le callback met trop de temps (timeout 1s)
-    setTimeout(function() {
-    window.location.href = url;
-    }, 1000);
-
-    } else {
-    // Si PostHog est bloqué par un AdBlocker
-    window.location.href = url;
-    }
-    });
-    });
-    });
-
 </body>
 
 </html>
